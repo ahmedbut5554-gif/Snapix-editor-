@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090912">
+<title>Snapix AI</title>
+<style>
+:root{--bg:#090912;--card:#151522;--card2:#202033;--line:#303047;--text:#f6f5ff;--muted:#a2a1b8;--purple:#815cff;--pink:#f34ca6;--green:#36d399}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif}button,input,select{font:inherit}button{cursor:pointer;color:inherit}.app{max-width:560px;min-height:100dvh;margin:auto;padding:18px 16px 36px;background:radial-gradient(ellipse at top,#24143b 0%,var(--bg) 42%)}header{display:flex;justify-content:space-between;align-items:center;padding:10px 2px 22px}.brand{font-weight:900;font-size:26px;letter-spacing:-1px}.brand span{background:linear-gradient(110deg,var(--purple),var(--pink));background-clip:text;color:transparent}.pill{font-size:12px;color:#d7ccff;border:1px solid #4b397c;border-radius:99px;padding:8px 11px;background:#241a3b}.hero h1{font-size:27px;line-height:1.15;margin:8px 0}.hero p,.muted{color:var(--muted);font-size:13px;line-height:1.5}.card{background:rgba(21,21,34,.94);border:1px solid var(--line);border-radius:20px;padding:15px;margin:16px 0}.upload{min-height:210px;display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;gap:10px;border:1.5px dashed #66518e;border-radius:17px;background:#12101f;padding:18px;overflow:hidden}.upload .plus{width:54px;height:54px;border-radius:17px;background:linear-gradient(135deg,var(--purple),var(--pink));display:grid;place-items:center;font-size:30px}.upload img,.upload video{max-width:100%;max-height:360px;object-fit:contain;border-radius:12px}.hidden{display:none!important}.btn{border:0;border-radius:14px;padding:13px 16px;font-weight:800;background:linear-gradient(120deg,var(--purple),var(--pink));width:100%;margin-top:10px}.btn.secondary{background:var(--card2);border:1px solid var(--line)}.btn:disabled{opacity:.45;cursor:not-allowed}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tool{border:1px solid var(--line);background:var(--card);border-radius:15px;padding:13px 10px;text-align:left;min-height:78px}.tool strong{display:block;font-size:13px}.tool small{display:block;color:var(--muted);font-size:11px;margin-top:5px;line-height:1.35}.tool.selected{border-color:var(--pink);background:#261a35}.section-title{font-size:16px;font-weight:850;margin:0 0 12px}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.range{width:100%;accent-color:var(--pink)}.labelrow{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin:13px 0 6px}.filters{display:flex;gap:8px;overflow:auto;padding-bottom:3px}.filter{flex:0 0 auto;width:90px;border:1px solid var(--line);background:var(--card);border-radius:13px;padding:10px 8px;font-size:12px}.filter.active{border-color:var(--pink)}.notice{background:#211b32;border:1px solid #453465;color:#d8cfff;border-radius:13px;padding:11px;font-size:12px;line-height:1.5;margin-top:12px}.tabs{position:sticky;bottom:0;display:flex;gap:8px;background:#0d0d17f2;backdrop-filter:blur(12px);padding:10px 0 calc(10px + env(safe-area-inset-bottom));margin-top:18px}.tabs button{flex:1;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:11px 5px;font-size:12px;font-weight:750}.tabs button.active{background:#35224f;border-color:#8058c7}.page{display:none}.page.active{display:block}.plan{padding:14px;border:1px solid var(--line);background:var(--card);border-radius:15px;margin:9px 0}.plan h3{margin:0 0 5px;font-size:15px}.plan p{margin:0;color:var(--muted);font-size:12px}.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#28243b;border:1px solid #554574;border-radius:13px;padding:12px 16px;font-size:13px;max-width:90%;z-index:5;display:none}.footer{text-align:center;color:#77768d;font-size:11px;padding:20px 0 0}@media(min-width:500px){.app{padding:24px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<main class="app">
+<header><div class="brand">Snapix <span>AI</span></div><div class="pill" id="usagePill">Free · 2/day</div></header>
+<section id="editorPage" class="page active">
+<div class="hero"><p>YOUR CREATIVE PHOTO STUDIO</p><h1>Make every photo<br>feel extraordinary.</h1><p>Upload a photo or video, preview edits, and save your result.</p></div>
+<div class="card">
+<div class="section-title">1. Choose media</div>
+<div class="row"><button class="btn secondary" id="photoBtn">📷 Choose photo</button><button class="btn secondary" id="videoBtn">🎬 Choose video</button></div>
+<input type="file" id="photoInput" accept="image/*" class="hidden"><input type="file" id="videoInput" accept="video/*" class="hidden">
+<div class="upload" id="previewBox" style="margin-top:12px"><div class="plus">＋</div><strong>Tap to choose a photo</strong><span class="muted">JPG, PNG, WEBP or video preview</span></div>
+<div class="muted" id="mediaName" style="margin-top:8px">No file selected</div>
+</div>
+<div class="card">
+<div class="section-title">2. Editing tools</div>
+<div class="grid" id="toolsGrid">
+<button class="tool selected" data-tool="enhance"><strong>✨ HD Enhance</strong><small>Local preview adjustment</small></button>
+<button class="tool" data-tool="deblur"><strong>🔎 Deblur HD</strong><small>Sharpen-style preview</small></button>
+<button class="tool" data-tool="extend"><strong>↗ AI Extend</strong><small>AI service required</small></button>
+<button class="tool" data-tool="background"><strong>🌄 New Background</strong><small>AI service required</small></button>
+<button class="tool" data-tool="portrait"><strong>🧑 Face Lock</strong><small>Keep edits subtle</small></button>
+<button class="tool" data-tool="color"><strong>🎨 Color Grade</strong><small>Adjust image color</small></button>
+</div>
+<div class="labelrow"><span>Brightness</span><span id="brightnessVal">100%</span></div><input class="range" id="brightness" type="range" min="50" max="160" value="100">
+<div class="labelrow"><span>Contrast</span><span id="contrastVal">100%</span></div><input class="range" id="contrast" type="range" min="50" max="170" value="100">
+<div class="labelrow"><span>Saturation</span><span id="saturationVal">100%</span></div><input class="range" id="saturation" type="range" min="0" max="180" value="100">
+<div class="labelrow"><span>Sharpness-style effect</span><span id="sharpnessVal">0%</span></div><input class="range" id="sharpness" type="range" min="0" max="5" value="0" step="1">
+<div class="section-title" style="margin-top:18px">Quick looks</div>
+<div class="filters"><button class="filter active" data-filter="none">Original</button><button class="filter" data-filter="vivid">Vivid</button><button class="filter" data-filter="warm">Warm</button><button class="filter" data-filter="mono">B&W</button><button class="filter" data-filter="cool">Cool</button></div>
+<div class="notice">🔒 Face Lock is a preference, not a guarantee. These local controls do not use generative AI and cannot guarantee identity preservation.</div>
+<button class="btn" id="saveBtn" disabled>⬇ Save edited photo</button>
+<button class="btn secondary" id="resetBtn">Reset adjustments</button>
+</div>
+</section>
+<section id="premiumPage" class="page">
+<div class="hero"><p>SNAPIX PLUS</p><h1>More room to create.</h1><p>Preview subscription options. Real billing is not connected in this demo.</p></div>
+<div class="plan"><h3>Free</h3><p>Basic local edits · daily-use demo counter</p></div>
+<div class="plan"><h3>Monthly · Rs 300</h3><p>Example price only. No payment will be taken.</p></div>
+<div class="plan"><h3>Yearly · Rs 1,200</h3><p>Example price only. No payment will be taken.</p></div>
+<div class="notice">Payments are not enabled. Before accepting money, connect a legitimate payment provider and implement server-side verification, receipts, and subscription management.</div>
+<button class="btn" id="premiumDemo">Preview premium status</button>
+<button class="btn secondary" id="clearUsage">Reset demo usage</button>
+</section>
+<section id="aboutPage" class="page">
+<div class="hero"><p>ABOUT THIS APP</p><h1>Snapix AI</h1><p>A mobile-friendly starter app built with HTML, CSS and JavaScript.</p></div>
+<div class="card"><div class="section-title">What works here</div><p class="muted">Photo selection, live local filter adjustments, and saving the adjusted image as a PNG.</p><p class="muted">Video selection and preview are supported, but video editing/export is not implemented.</p><p class="muted">AI enhancement, background replacement, cloud storage, accounts, and real payments need additional services.</p></div>
+</section>
+<nav class="tabs"><button class="active" data-page="editorPage">✦ Editor</button><button data-page="premiumPage">♛ Premium</button><button data-page="aboutPage">ⓘ About</button></nav>
+<div class="footer">Snapix AI · Demo build · Your selected files stay in this browser.</div>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const state = {file:null, type:null, image:null, objectUrl:null, tool:'enhance', filter:'none', premium:false};
+const photoInput=$('photoInput'), videoInput=$('videoInput'), previewBox=$('previewBox');
+function toast(msg){const t=$('toast');t.textContent=msg;t.style.display='block';clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.style.display='none',2600)}
+function setPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>setPage(b.dataset.page)));
+$('photoBtn').onclick=()=>photoInput.click();$('videoBtn').onclick=()=>videoInput.click();
+previewBox.onclick=()=>{if(state.type==='video')videoInput.click();else photoInput.click()};
+function clearPreview(){if(state.objectUrl)URL.revokeObjectURL(state.objectUrl);state.objectUrl=null;state.image=null;previewBox.innerHTML='<div class="plus">＋</div><strong>Tap to choose a photo</strong><span class="muted">JPG, PNG, WEBP or video preview</span>';$('saveBtn').disabled=true}
+function loadFile(file,type){
+ if(!file)return;
+ if(state.objectUrl)URL.revokeObjectURL(state.objectUrl);
+ state.file=file;state.type=type;state.objectUrl=URL.createObjectURL(file);$('mediaName').textContent=file.name;
+ if(type==='video'){previewBox.innerHTML='';const v=document.createElement('video');v.src=state.objectUrl;v.controls=true;v.playsInline=true;v.style.maxWidth='100%';v.style.maxHeight='360px';previewBox.appendChild(v);$('saveBtn').disabled=true;toast('Video preview ready. Video export is not available in this demo.');return}
+ const img=new Image();img.onload=()=>{state.image=img;previewBox.innerHTML='';const p=document.createElement('img');p.id='livePreview';p.alt='Selected photo preview';p.src=state.objectUrl;p.style.maxWidth='100%';p.style.maxHeight='360px';p.style.objectFit='contain';previewBox.appendChild(p);applyPreview();$('saveBtn').disabled=false};img.onerror=()=>toast('Could not open this image. Try another file.');img.src=state.objectUrl;
+}
+photoInput.addEventListener('change',e=>loadFile(e.target.files[0],'photo'));videoInput.addEventListener('change',e=>loadFile(e.target.files[0],'video'));
+function filterValues(){let b=+$('brightness').value,c=+$('contrast').value,s=+$('saturation').value;let extra='';
+ if(state.filter==='vivid'){c+=12;s=Math.min(200,s+22)}if(state.filter==='warm')extra=' sepia(.18)';if(state.filter==='mono')extra=' grayscale(1)';if(state.filter==='cool')extra=' hue-rotate(12deg) saturate(1.1)';
+ return `brightness(${b}%) contrast(${c}%) saturate(${s}%)${extra}`;
+}
+function applyPreview(){const p=document.getElementById('livePreview');if(p)p.style.filter=filterValues()}
+['brightness','contrast','saturation'].forEach(id=>$(id).addEventListener('input',()=>{$(id+'Val').textContent=$(id).value+'%';applyPreview()}));
+$('sharpness').addEventListener('input',()=>{$('sharpnessVal').textContent=$('sharpness').value+'%';toast('Sharpness control is a preview placeholder; use an AI/image-processing service for true deblurring.')});
+document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{state.filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));applyPreview()}));
+document.querySelectorAll('[data-tool]').forEach(b=>b.addEventListener('click',()=>{state.tool=b.dataset.tool;document.querySelectorAll('[data-tool]').forEach(x=>x.classList.toggle('selected',x===b));if(['extend','background'].includes(state.tool))toast('This feature needs a connected AI service.');else if(state.tool==='deblur')toast('Adjust the controls for a local preview; true deblurring needs image processing.');else if(state.tool==='portrait')toast('Face Lock preference selected; identity preservation is not guaranteed.');else toast('Tool selected. Adjust the sliders to preview your photo.')}))
+$('saveBtn').addEventListener('click',()=>{
+ if(!state.image||state.type!=='photo'){toast('Choose a photo first.');return}
+ const img=state.image,scale=Math.min(1,4096/Math.max(img.naturalWidth,img.naturalHeight));
+ const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.naturalWidth*scale));canvas.height=Math.max(1,Math.round(img.naturalHeight*scale));
+ const ctx=canvas.getContext('2d');ctx.filter=filterValues();ctx.drawImage(img,0,0,canvas.width,canvas.height);
+ canvas.toBlob(blob=>{if(!blob){toast('Could not export this image.');return}const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='snapix-edited.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);toast('Edited photo saved as PNG.')},'image/png');
+});
+function reset(){['brightness','contrast','saturation'].forEach(id=>{$(id).value=100;$(id+'Val').textContent='100%'});$('sharpness').value=0;$('sharpnessVal').textContent='0%';state.filter='none';document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter==='none'));applyPreview();toast('Adjustments reset.')}
+$('resetBtn').onclick=reset;
+$('premiumDemo').onclick=()=>{state.premium=!state.premium;$('usagePill').textContent=state.premium?'Premium demo':'Free · 2/day';$('premiumDemo').textContent=state.premium?'Premium demo enabled':'Preview premium status';toast(state.premium?'Demo premium status enabled. No payment was made.':'Demo premium status disabled.')};
+$('clearUsage').onclick=()=>toast('No usage data needs resetting in this demo.');
+})();
+</script>
+</body>
+</html>
